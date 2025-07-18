@@ -7,12 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-// builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen(); // <-- Enable Swagger/OpenAPI
-
-// builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen();
 
 // Add Entity Framework
 builder.Services.AddDbContext<HotelDbContext>(options =>
@@ -32,8 +28,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(); // <-- Serve OpenAPI JSON at /swagger/v1/swagger.json
-    app.UseSwaggerUI(); 
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

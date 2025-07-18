@@ -13,12 +13,11 @@ public class RoomRepository : IRoomRepository
         _context = context;
     }
 
-    public async Task<List<Room>> GetAvailableRoomsAsync(DateOnly checkInDate, DateOnly checkOutDate, int peopleCount)
+    public async Task<List<Room>> GetAvailableRoomsAsync(DateOnly checkInDate, DateOnly checkOutDate)
     {
         return await _context.Rooms
             .Include(r => r.Hotel)
             .Include(r => r.RoomType)
-            .Where(r => r.RoomType.MaxOccupancy >= peopleCount)
             .Where(r => !r.Bookings.Any(b =>
                 b.CheckInDate < checkOutDate &&
                 b.CheckOutDate > checkInDate))
@@ -27,4 +26,18 @@ public class RoomRepository : IRoomRepository
             .ToListAsync();
     }
 
+    public async Task<List<Room>> GetRoomsByIdsAndHotelAsync(List<int> roomIds, int hotelId)
+    {
+        return await _context.Rooms
+            .Where(r => roomIds.Contains(r.Id) && r.HotelId == hotelId)
+            .ToListAsync();
+    }
+
+    public async Task<List<Room>> GetRoomsWithTypesByIdsAndHotelAsync(List<int> roomIds, int hotelId)
+    {
+        return await _context.Rooms
+            .Include(r => r.RoomType)
+            .Where(r => roomIds.Contains(r.Id) && r.HotelId == hotelId)
+            .ToListAsync();
+    }
 }

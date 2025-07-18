@@ -4,7 +4,7 @@ namespace Hotel.Repositories;
 
 public interface IRoomRepository
 {
-    Task<List<Room>> GetAvailableRoomsAsync(DateOnly checkInDate, DateOnly checkOutDate, int peopleCount);
-    // Task<List<Room>> GetRoomsByIdsAndHotelAsync(List<int> roomIds, int hotelId);
-    // Task<Room?> GetByIdAsync(int id);
+    Task<List<Room>> GetAvailableRoomsAsync(DateOnly checkInDate, DateOnly checkOutDate);
+    Task<List<Room>> GetRoomsByIdsAndHotelAsync(List<int> roomIds, int hotelId);
+    Task<List<Room>> GetRoomsWithTypesByIdsAndHotelAsync(List<int> roomIds, int hotelId);
 }

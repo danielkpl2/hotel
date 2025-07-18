@@ -10,11 +10,19 @@ public class HotelService
 {
     private readonly HotelDbContext _context;
     private readonly IHotelRepository _hotelRepository;
+    private readonly IBookingRepository _bookingRepository;
+    private readonly IRoomRepository _roomRepository;
 
-    public HotelService(HotelDbContext context, IHotelRepository hotelRepository)
+    public HotelService(
+        HotelDbContext context,
+        IHotelRepository hotelRepository,
+        IBookingRepository bookingRepository,
+        IRoomRepository roomRepository)
     {
         _context = context;
         _hotelRepository = hotelRepository;
+        _bookingRepository = bookingRepository;
+        _roomRepository = roomRepository;
     }
 
     public async Task<List<Models.Hotel>> FindHotelsByNameAsync(string name)
@@ -29,17 +37,14 @@ public class HotelService
 
     public async Task<Booking?> FindBookingByBookingReferenceAsync(string bookingReference)
     {
-        return await _context.Bookings
-            .Include(b => b.Hotel)
-            .Include(b => b.Rooms)
-            .FirstOrDefaultAsync(b => b.BookingReference == bookingReference);
+        return await _bookingRepository.FindByReferenceAsync(bookingReference);
     }
 
     public async Task<List<HotelAvailabilityDto>> FindAvailableRoomsAsync(DateOnly checkInDate, DateOnly checkOutDate, int peopleCount)
     {
         ValidateDates(checkInDate, checkOutDate);
         
-        var availableRooms = await _hotelRepository.GetAvailableRoomsAsync(checkInDate, checkOutDate);
+        var availableRooms = await _roomRepository.GetAvailableRoomsAsync(checkInDate, checkOutDate);
         
         var nights = checkOutDate.DayNumber - checkInDate.DayNumber;
         
@@ -150,10 +155,7 @@ public class HotelService
         }
 
         // 5. Get the requested rooms with their types
-        var rooms = await _context.Rooms
-            .Include(r => r.RoomType)
-            .Where(r => roomIds.Contains(r.Id) && r.HotelId == hotelId)
-            .ToListAsync();
+        var rooms = await _roomRepository.GetRoomsWithTypesByIdsAndHotelAsync(roomIds, hotelId);
 
         // 6. Check if all rooms exist and belong to the hotel
         var foundRoomIds = rooms.Select(r => r.Id).ToList();
@@ -183,11 +185,7 @@ public class HotelService
         
         foreach (var room in rooms)
         {
-            var conflictingBookings = await _context.Bookings
-                .Where(b => b.Rooms.Any(r => r.Id == room.Id))
-                .Where(b => b.CheckInDate < checkOutDate && b.CheckOutDate > checkInDate)
-                .Select(b => new { b.BookingReference, b.CheckInDate, b.CheckOutDate, b.GuestName })
-                .ToListAsync();
+            var conflictingBookings = await _bookingRepository.GetBookingsForRoomAndDatesAsync(room.Id, checkInDate, checkOutDate);
 
             if (conflictingBookings.Any())
             {
@@ -227,10 +225,7 @@ public class HotelService
             }
 
             // Get the rooms (we know they exist and are valid from the validation above)
-            var rooms = await _context.Rooms
-                .Include(r => r.RoomType)
-                .Where(r => roomIds.Contains(r.Id) && r.HotelId == hotelId)
-                .ToListAsync();
+            var rooms = await _roomRepository.GetRoomsWithTypesByIdsAndHotelAsync(roomIds, hotelId);
 
             // Calculate total price
             var nights = checkOutDate.DayNumber - checkInDate.DayNumber;
@@ -250,8 +245,8 @@ public class HotelService
             };
 
             // Save to database
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
+            await _bookingRepository.AddAsync(booking);
+            await _bookingRepository.SaveChangesAsync();
             
             await transaction.CommitAsync();
             return booking;
