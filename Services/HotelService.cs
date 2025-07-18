@@ -180,6 +180,12 @@ public class HotelService
                       $"Rooms: {string.Join(", ", roomDetails)}");
         }
 
+        // Maximum room count check
+        if (rooms.Count > peopleCount)
+        {
+            issues.Add($"Cannot book more rooms ({rooms.Count}) than people ({peopleCount}).");
+        }
+
         // 8. Check availability for each room during the specified dates
         var unavailableRooms = new List<string>();
         

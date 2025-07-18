@@ -401,9 +401,55 @@ public class HotelIntegrationTests
         var content = await response.Content.ReadAsStringAsync();
         content.Should().MatchRegex("not available|Booking validation failed");
     }
+    
+    [Test]
+    public async Task CreateBooking_TooManyRooms_ReturnsConflict()
+    {
+        // Arrange: Find available rooms for a valid booking
+        var checkInDate = "2025-07-25";
+        var checkOutDate = "2025-07-27";
+        var peopleCount = 2;
+
+        // Get available rooms
+        var availableResponse = await _client.GetAsync(
+            $"/api/hotel/bookings/available-rooms?checkInDate={checkInDate}&checkOutDate={checkOutDate}&peopleCount={peopleCount}");
+
+        availableResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var content = await availableResponse.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<JsonElement>(content);
+
+        var hotels = result.GetProperty("hotels").EnumerateArray();
+        var firstHotel = hotels.First();
+        var hotelId = firstHotel.GetProperty("hotelId").GetInt32();
+        var availableRooms = firstHotel.GetProperty("availableRooms").EnumerateArray().ToList();
+
+        // Try to select more rooms than peopleCount
+        var selectedRooms = availableRooms.Take(peopleCount + 2).Select(r => r.GetProperty("roomId").GetInt32()).ToList();
+        selectedRooms.Count.Should().BeGreaterThan(peopleCount);
+
+        var guestName = "Overbooking Test Guest";
+
+        var request = new CreateBookingRequestDto
+        {
+            HotelId = hotelId,
+            RoomIds = selectedRooms,
+            GuestName = guestName,
+            PeopleCount = peopleCount,
+            CheckInDate = checkInDate,
+            CheckOutDate = checkOutDate
+        };
+
+        // Act: Attempt to overbook
+        var response = await _client.PostAsJsonAsync("/api/hotel/bookings/book", request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        var errorContent = await response.Content.ReadAsStringAsync();
+        errorContent.Should().Contain("Cannot book more rooms");
+    }
 
     #endregion
-   
+
     private static string GetContentRoot()
     {
         // Get the directory where the test assembly is located
