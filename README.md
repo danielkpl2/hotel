@@ -52,6 +52,9 @@ GRANT ALL PRIVILEGES ON DATABASE "HotelDb_Test" TO hoteluser;
 - The DB credentials are in the `appsettings` files.  
   (They are committed for convenience in this project.)
 
+**Note:**  
+The database tables use **PascalCase** by default (e.g., `"Bookings"`, `"BookingRooms"`, `"Hotels"`), as generated
+
 ---
 
 ## Presumptions Made
