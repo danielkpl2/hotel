@@ -162,3 +162,7 @@ This will prevent any inserts into the Rooms table that exceed the room limit fo
 }
 ```
 
+> **Note:**  
+> There is a small naming clash between the namespace `Hotel` and the model name `Hotel`.  
+> I'm aware of this but it's a bit of a hassle to change it now so I left it as is.
+
