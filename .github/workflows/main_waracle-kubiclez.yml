@@ -61,5 +61,5 @@ jobs:
         with:
           app-name: 'waracle-kubiclez'
           slot-name: 'Production'
-          package: myapp
+          package: .
           
