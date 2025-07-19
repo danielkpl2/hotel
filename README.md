@@ -72,9 +72,9 @@ The database tables use **PascalCase** by default (e.g., `"Bookings"`, `"Booking
 If the number of available rooms at the hotel between requested dates is **greater than or equal to the requested amount**,  
 **all of the available rooms get returned**. The user can then select the combination of rooms they want.
 
-> **Possible improvement:**  
-> If requesting 4 people and there are 2 doubles and 1 single, don't return the single because it can't accommodate the required 4.  
-> But if there are 2 singles and 2 doubles, the 2 singles could be returned because the user can take 2 singles and 1 double.
+> **Possible improvements:**
+> - When searching for rooms for 4 people, if there are 2 doubles and 1 single available, the single should not be returned since it cannot accommodate the group of 4. However, if there are 2 singles and 2 doubles available, the 2 singles could be included in the results, as the user could select 2 singles and 1 double to accommodate all 4 people.
+> - For room searches, in addition to specifying the number of people, it would be beneficial to allow users to specify the number of rooms required. This would enable more precise querying and better match
 
 ---
 
@@ -103,9 +103,13 @@ DELETE /api/admin/seed/clear
 
 ## API Documentation
 
-- The OpenAPI/Swagger file can be accessed at:  
+- The OpenAPI/Swagger file can be accessed at:
   ```
-  {url}/openapi/v1.json
+  http://localhost:5189/openapi/v1.json
+  ```
+- The interactive Swagger UI is available at:
+  ```
+  http://localhost:5189/swagger
   ```
 
 ---
