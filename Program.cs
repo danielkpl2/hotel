@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 // Add Entity Framework
 var connectionString = Environment.GetEnvironmentVariable("DefaultConnection")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
+Console.WriteLine($"Connection string: {connectionString}");
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseNpgsql(connectionString));
 
