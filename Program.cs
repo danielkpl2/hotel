@@ -11,9 +11,13 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 // Add Entity Framework
-var connectionString = Environment.GetEnvironmentVariable("DefaultConnection")
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"Connection string: {connectionString}");
+
+var ConnectionStrings__DefaultConnection = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+    ?? builder.Configuration.GetValue<string>("DatabaseName");
+Console.WriteLine($"Connection string: {Environment.GetEnvironmentVariable("DefaultConnection")}");
+Console.WriteLine($"ConnectionStrings__DefaultConnection: {ConnectionStrings__DefaultConnection}");
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseNpgsql(connectionString));
 
