@@ -11,13 +11,13 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 // Add Entity Framework
-var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+// var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+//     ?? builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// var ConnectionStrings__DefaultConnection = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
-var ConnectionStrings__DefaultConnection = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
-
-Console.WriteLine($"Connection string: {Environment.GetEnvironmentVariable("DefaultConnection")}");
-Console.WriteLine($"ConnectionStrings__DefaultConnection: {ConnectionStrings__DefaultConnection}");
+// Console.WriteLine($"Connection string: {Environment.GetEnvironmentVariable("DefaultConnection")}");
+// Console.WriteLine($"ConnectionStrings__DefaultConnection: {ConnectionStrings__DefaultConnection}");
 
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -40,7 +40,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 // }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.MapControllers();
 
