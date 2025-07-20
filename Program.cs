@@ -15,9 +15,10 @@ var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__De
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 var ConnectionStrings__DefaultConnection = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
-    ?? builder.Configuration.GetValue<string>("DatabaseName");
+
 Console.WriteLine($"Connection string: {Environment.GetEnvironmentVariable("DefaultConnection")}");
 Console.WriteLine($"ConnectionStrings__DefaultConnection: {ConnectionStrings__DefaultConnection}");
+
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseNpgsql(connectionString));
 
