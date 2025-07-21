@@ -57,6 +57,14 @@ CREATE DATABASE "HotelDb_Test" WITH OWNER = hoteluser ENCODING = 'UTF8' CONNECTI
 GRANT ALL PRIVILEGES ON DATABASE "HotelDb_Test" TO hoteluser;
 ```
 
+---
+
+## Development Database Credentials
+
+For convenience, development database credentials are included in `appsettings.Development.json` and committed to the repository.
+
+In production (e.g., on Azure), all sensitive database credentials are set using environment variables and are not stored in source control.
+
 ### 2. Run Entity Framework Migrations
 
 For convenience migrations are run automatically on startup.
