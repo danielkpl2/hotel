@@ -45,11 +45,11 @@ INSERT INTO "Rooms" ("Id", "RoomNumber", "Price", "HotelId", "RoomTypeId") VALUE
 
 -- Insert Sample Bookings
 INSERT INTO "Bookings" ("Id", "GuestName", "PeopleCount", "CheckInDate", "CheckOutDate", "TotalPrice", "BookingReference", "HotelId") VALUES
-(1, 'Sherlock Holmes', 2, '2025-07-15', '2025-07-18', 540.00, 'BK20250715120000001', 1),        -- 3 nights at Westminster Palace
-(2, 'Elmo Monster', 1, '2025-07-20', '2025-07-22', 240.00, 'BK20250720120000002', 2),           -- 2 nights at Big Ben Tower
-(3, 'Cookie Monster', 3, '2025-07-25', '2025-07-28', 750.00, 'BK20250725120000003', 3),         -- 3 nights at Buckingham Gardens
-(4, 'Wallace Gromit', 2, '2025-08-01', '2025-08-04', 555.00, 'BK20250801120000004', 1),         -- 3 nights at Westminster Palace
-(5, 'Big Bird', 1, '2025-08-05', '2025-08-07', 210.00, 'BK20250805120000005', 3);               -- 2 nights at Buckingham Gardens
+(1, 'Sherlock Holmes', 2, '2025-07-15', '2025-07-18', 540.00, 'BK20250715120000001', 1),
+(2, 'Elmo Monster', 1, '2025-07-20', '2025-07-22', 240.00, 'BK20250720120000002', 2),
+(3, 'Cookie Monster', 3, '2025-07-25', '2025-07-28', 750.00, 'BK20250725120000003', 3),
+(4, 'Wallace Gromit', 2, '2025-08-01', '2025-08-04', 555.00, 'BK20250801120000004', 1),
+(5, 'Big Bird', 1, '2025-08-05', '2025-08-07', 210.00, 'BK20250805120000005', 3);
 
 -- Insert Booking-Room relationships (junction table)
 INSERT INTO "BookingRooms" ("BookingId", "RoomId") VALUES
