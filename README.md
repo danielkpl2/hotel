@@ -78,12 +78,13 @@ The database tables use **PascalCase** by default (e.g., `"Bookings"`, `"Booking
 
 ## Room Availability Logic
 
-If the number of available rooms at the hotel between requested dates is **greater than or equal to the requested amount**,  
-**all of the available rooms get returned**. The user can then select the combination of rooms they want.
+If the number of available rooms at the hotel between requested dates is **greater than or equal to the requested amount**, **all of the available rooms get returned**. The user can then select the combination of rooms they want.
 
 > **Possible improvements:**
 > - When searching for rooms for 4 people, if there are 2 doubles and 1 single available, the single should not be returned since it cannot accommodate the group of 4. However, if there are 2 singles and 2 doubles available, the 2 singles could be included in the results, as the user could select 2 singles and 1 double to accommodate all 4 people.
 > - For room searches, in addition to specifying the number of people, it would be beneficial to allow users to specify the number of rooms required. This would enable more precise querying and better match
+
+
 > **If I had more time:**  
 > I would focus on optimizing the room availability query by moving more of the filtering logic to the database level. This would help prevent unnecessary data fetching and improve overall performance, especially for larger datasets.
 
