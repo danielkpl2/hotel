@@ -149,7 +149,7 @@ I used integration tests to test the required functionality.
 
 ### DTOs
 
-I used DTOs (Data Transfer Objects) to contain the data being transported to the controllers and from the DB.
+I used DTOs (Data Transfer Objects) to contain the data being transferred to the controllers and from the DB. There are still responses from controllers that aren't encapsulated in DTOs, but I didn't have time to refactor them all.
 
 ### Exceptions
 
