@@ -2,7 +2,9 @@
 ## Azure Deployment
 
 The project is deployed on Azure and can be accessed here:
+
 [React Front End](https://waracle-kubiclez-hrdegjdtdah8dnae.uksouth-01.azurewebsites.net)
+
 [Hotel API Swagger UI](https://waracle-kubiclez-hrdegjdtdah8dnae.uksouth-01.azurewebsites.net/swagger/index.html)
 
 ## Prerequisites
